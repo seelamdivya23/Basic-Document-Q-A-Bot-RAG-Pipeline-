@@ -1,0 +1,44 @@
+Machine Learning – Detailed Overview
+
+Machine learning is a branch of artificial intelligence that enables systems to learn from data and improve performance without being explicitly programmed.
+
+Machine learning algorithms build mathematical models based on training data to make predictions or decisions.
+
+Types of Machine Learning:
+
+1. Supervised Learning
+Supervised learning uses labeled data. The model learns from input-output pairs.
+Examples:
+- Linear Regression
+- Logistic Regression
+- Decision Trees
+
+2. Unsupervised Learning
+Unsupervised learning deals with unlabeled data.
+Examples:
+- Clustering (K-means)
+- Dimensionality Reduction (PCA)
+
+3. Reinforcement Learning
+An agent learns by interacting with an environment and receiving rewards or penalties.
+
+Applications of Machine Learning:
+
+- Recommendation Systems (Netflix, Amazon)
+- Fraud Detection
+- Image Recognition
+- Speech Recognition
+- Autonomous Vehicles
+
+Machine learning relies heavily on data quality and feature engineering. The performance of a model depends on the quality of data it is trained on.
+
+Challenges in Machine Learning:
+
+- Overfitting
+- Underfitting
+- Data imbalance
+- Lack of interpretability
+
+Future of Machine Learning:
+
+Machine learning is continuously evolving and is being integrated into various industries such as healthcare, finance, and education.

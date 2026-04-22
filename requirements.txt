@@ -1,0 +1,10 @@
+langchain
+faiss-cpu
+sentence-transformers
+pypdf
+python-dotenv
+ollama
+langchain-huggingface
+langchain-ollama
+python-docx
+docx2txt
