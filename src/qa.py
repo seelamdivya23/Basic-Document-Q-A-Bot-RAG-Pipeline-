@@ -1,17 +1,36 @@
 from langchain_ollama import OllamaLLM
-from langchain.chains import RetrievalQA
+from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
+from langchain.memory import ConversationBufferMemory
+
 
 def get_qa_chain(retriever):
-    
-    llm = OllamaLLM(model="phi3")
+
+    llm = OllamaLLM(
+        model="phi3",
+        temperature=0
+    )
+
+    memory = ConversationBufferMemory(
+    memory_key="chat_history",
+    return_messages=True,
+    output_key="answer"
+)
+
 
     prompt_template = """
-    You are a helpful AI assistant.
+    You are a strict document-based assistant.
 
-    Answer the question ONLY using the provided context.
-    If the answer is not in the context, say:
-    "I don't know based on the given documents."
+    Your job is to answer ONLY using the provided context.
+
+    Rules:
+    - Do NOT use external knowledge
+    - Do NOT guess
+    - If answer is not clearly present, say:
+      "I don't know based on the given documents."
+
+    Chat History:
+    {chat_history}
 
     Context:
     {context}
@@ -19,19 +38,20 @@ def get_qa_chain(retriever):
     Question:
     {question}
 
-    Answer:
+    Answer (be clear and concise):
     """
 
     prompt = PromptTemplate(
         template=prompt_template,
-        input_variables=["context", "question"]
+        input_variables=["chat_history", "context", "question"]
     )
 
-    qa_chain = RetrievalQA.from_chain_type(
+    qa_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
         retriever=retriever,
+        memory=memory,
         return_source_documents=True,
-        chain_type_kwargs={"prompt": prompt}
+        combine_docs_chain_kwargs={"prompt": prompt}
     )
 
     return qa_chain

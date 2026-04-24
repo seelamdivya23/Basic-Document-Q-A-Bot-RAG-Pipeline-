@@ -8,3 +8,7 @@ langchain-huggingface
 langchain-ollama
 python-docx
 docx2txt
+streamlit
+speechrecognition
+pyaudio
+reportlab
