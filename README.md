@@ -24,41 +24,75 @@ The system avoids hallucinations by retrieving relevant context from documents b
 ---
 
 ## 🧠 Architecture (RAG Pipeline)
-
-1. **Document Ingestion**
-
-   * Loads documents from local folder
-   * Supports PDF, TXT, DOCX, CSV
-   * Cleans text (removes extra spaces, noise)
-
-2. **Text Chunking**
-
-   * Splits documents into smaller chunks
-   * Uses overlap to preserve context
-   * Stores metadata (source file + page number)
-
-3. **Embedding**
-
-   * Converts text chunks into vector embeddings
-   * Uses HuggingFace embedding model
-   * Batch processing for efficiency
-
-4. **Vector Database**
-
-   * Stores embeddings using FAISS
-   * Persistent storage (no re-indexing required)
-
-5. **Retrieval**
-
-   * Retrieves top-k relevant chunks using similarity search
-
-6. **Answer Generation**
-
-   * Uses LLM (Ollama - Phi3)
-   * Answers strictly from retrieved context
-   * Provides source citation
+### ⚙️ Design Decisions
 
 ---
+
+### 🔹 Chunking Strategy
+We used **fixed-size chunking with overlap**.
+
+- Chunk size: ~500 characters
+- Overlap: ~50–100 characters
+
+✅ Reason:
+- Prevents losing context between chunks
+- Improves retrieval accuracy
+- Works well for PDFs and mixed document formats
+
+---
+
+### 🔹 Embedding Model
+We used **HuggingFace Embeddings (sentence-transformers)**.
+
+✅ Reason:
+- Free and open-source (no API cost)
+- Good semantic understanding
+- Works well with FAISS
+
+---
+
+### 🔹 Vector Database
+We used **FAISS (Facebook AI Similarity Search)**.
+
+✅ Reason:
+- Fast similarity search
+- Lightweight and runs locally
+- No need for external server/database
+- Supports persistence (saved to disk)
+
+---
+
+### 🔹 LLM Choice
+We used **Ollama with Phi3 model**.
+
+✅ Reason:
+- Fully open-source and runs locally
+- No API key required
+- Suitable for offline and low-cost environments
+
+---
+
+### 🔹 Retrieval Strategy
+- Top-K similarity search (k=5)
+- Returns most relevant chunks based on query
+
+✅ Reason:
+- Balances accuracy and performance
+- Ensures relevant context is passed to LLM
+
+---
+
+### 🔹 Hallucination Control
+- Strict prompt: "Use only context"
+- If no relevant chunks → returns:
+  "I don't know based on the given documents."
+
+✅ Reason:
+- Prevents incorrect answers
+- Ensures grounded responses
+
+---
+
 
 ## 📁 Project Structure
 
@@ -81,6 +115,28 @@ document-qa-bot/
 ├── requirements.txt
 └── README.md
 ```
+
+---
+
+## 🖼️ UI Screenshots
+
+### 📌 UI Interface
+![Indexing](assets/ui.png)
+
+---
+### 📌  Indexing
+![Indexing](assets/indexing.png)
+---
+
+### 💬 Chat Interface 1
+![Chat 1](assets/chat-1.png)
+
+---
+
+### 💬 Chat Interface 2
+![Chat 2](assets/chat-2.png)
+
+---
 
 ---
 
